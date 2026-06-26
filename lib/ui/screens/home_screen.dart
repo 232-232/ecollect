@@ -4,7 +4,8 @@ import '../../core/utils.dart';
 import '../../data/app_state.dart';
 import '../../data/models.dart';
 import '../widgets/shop_card.dart';
-import '../widgets/add_collection_sheet.dart' show AddCollectionSheet, showToast;
+import '../widgets/add_collection_sheet.dart'
+    show AddCollectionSheet, showToast;
 import 'add_shop_screen.dart';
 import 'report_screen.dart';
 import '../widgets/animated_dropdown.dart';
@@ -19,7 +20,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
 
-  final List<String> roots = ['All Roots', 'Place 1', 'Place 2', 'Place 3', 'Place 4'];
+  final List<String> roots = [
+    'All Roots',
+    'Place 1',
+    'Place 2',
+    'Place 3',
+    'Place 4',
+  ];
   final List<String> ecTypes = ['All EC', 'Auto Credit', 'Manual', 'Digital'];
 
   String selectedRoot = 'All Roots';
@@ -38,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: RichText(
@@ -56,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              context.watch<AppState>().isDarkMode 
-                  ? Icons.light_mode_outlined 
+              context.watch<AppState>().isDarkMode
+                  ? Icons.light_mode_outlined
                   : Icons.dark_mode_outlined,
             ),
             onPressed: () {
@@ -70,37 +77,56 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => const ReportScreen(),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(1.0, 0.0),
-                        end: Offset.zero,
-                      ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
-                      child: child,
-                    );
-                  },
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const ReportScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        return SlideTransition(
+                          position:
+                              Tween<Offset>(
+                                begin: const Offset(1.0, 0.0),
+                                end: Offset.zero,
+                              ).animate(
+                                CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeInOut,
+                                ),
+                              ),
+                          child: child,
+                        );
+                      },
                 ),
               );
             },
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 8.0,
+            ),
             child: _AnimatedAddButton(
               onTap: () {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => const AddShopScreen(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(1.0, 0.0),
-                          end: Offset.zero,
-                        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
-                        child: child,
-                      );
-                    },
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const AddShopScreen(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          return SlideTransition(
+                            position:
+                                Tween<Offset>(
+                                  begin: const Offset(1.0, 0.0),
+                                  end: Offset.zero,
+                                ).animate(
+                                  CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.easeInOut,
+                                  ),
+                                ),
+                            child: child,
+                          );
+                        },
                   ),
                 );
               },
@@ -142,8 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (newValue != null) {
                             setState(() => selectedRoot = newValue);
                             context.read<AppState>().setFilter(
-                                  root: newValue == 'All Roots' ? '' : newValue,
-                                );
+                              root: newValue == 'All Roots' ? '' : newValue,
+                            );
                           }
                         },
                       ),
@@ -158,8 +184,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (newValue != null) {
                             setState(() => selectedEC = newValue);
                             context.read<AppState>().setFilter(
-                                  ec: newValue == 'All EC' ? '' : newValue,
-                                );
+                              ec: newValue == 'All EC' ? '' : newValue,
+                            );
                           }
                         },
                       ),
@@ -180,7 +206,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Consumer<AppState>(
                   builder: (context, state, child) => Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 9,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: theme.dividerColor,
                       borderRadius: BorderRadius.circular(20),
@@ -203,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Consumer<AppState>(
               builder: (context, state, child) {
                 final shops = state.filteredShops;
-                
+
                 if (shops.isEmpty) {
                   return const Center(child: _PulsingEmptyState());
                 }
@@ -221,10 +250,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           context: context,
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,
-                          builder: (context) => AddCollectionSheet(shopId: shop.id),
+                          builder: (context) =>
+                              AddCollectionSheet(shopId: shop.id),
                         ).then((result) {
                           if (result == true && context.mounted) {
-                            showToast(context, 'Collection added successfully ✓');
+                            showToast(
+                              context,
+                              'Collection added successfully ✓',
+                            );
                           }
                         });
                       },
@@ -244,7 +277,9 @@ class _HomeScreenState extends State<HomeScreen> {
             final todayTotal = shop.todayTotal;
             if (todayTotal > 0) {
               total += todayTotal;
-              count += shop.transactions.where((t) => t.timestamp.day == DateTime.now().day).length;
+              count += shop.transactions
+                  .where((t) => t.timestamp.day == DateTime.now().day)
+                  .length;
             }
           }
 
@@ -255,7 +290,12 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Container(
               color: theme.cardColor,
-              padding: EdgeInsets.fromLTRB(20, 12, 20, 12 + MediaQuery.of(context).padding.bottom),
+              padding: EdgeInsets.fromLTRB(
+                20,
+                12,
+                20,
+                12 + MediaQuery.of(context).padding.bottom,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -265,14 +305,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Row(
                         children: [
-                          const Text('Today\'s Collection', style: TextStyle(fontWeight: FontWeight.bold)),
+                          const Text(
+                            'Today\'s Collection',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           if (count > 0) ...[
                             const SizedBox(width: 6),
-                            Icon(Icons.open_in_new, size: 14, color: theme.primaryColor),
+                            Icon(
+                              Icons.open_in_new,
+                              size: 14,
+                              color: theme.primaryColor,
+                            ),
                           ],
                         ],
                       ),
-                      Text('$count collections', style: TextStyle(color: theme.textTheme.bodySmall?.color, fontSize: 12)),
+                      Text(
+                        '$count collections',
+                        style: TextStyle(
+                          color: theme.textTheme.bodySmall?.color,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                   Text(
@@ -316,7 +369,9 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         }
 
-        todayTxs.sort((a, b) => (b['time'] as DateTime).compareTo(a['time'] as DateTime));
+        todayTxs.sort(
+          (a, b) => (b['time'] as DateTime).compareTo(a['time'] as DateTime),
+        );
 
         return Container(
           decoration: BoxDecoration(
@@ -345,7 +400,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Flexible(
                 child: ListView.separated(
                   shrinkWrap: true,
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, MediaQuery.of(context).padding.bottom + 20),
+                  padding: EdgeInsets.fromLTRB(
+                    20,
+                    0,
+                    20,
+                    MediaQuery.of(context).padding.bottom + 20,
+                  ),
                   itemCount: todayTxs.length,
                   separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, index) {
@@ -353,14 +413,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     final shop = item['shop'] as ShopModel;
                     final amount = item['amount'] as double;
                     final time = item['time'] as DateTime;
-                    
+
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: CircleAvatar(
-                        backgroundColor: theme.primaryColor.withValues(alpha: 0.1),
-                        child: Icon(Icons.receipt, color: theme.primaryColor, size: 18),
+                        backgroundColor: theme.primaryColor.withValues(
+                          alpha: 0.1,
+                        ),
+                        child: Icon(
+                          Icons.receipt,
+                          color: theme.primaryColor,
+                          size: 18,
+                        ),
                       ),
-                      title: Text(shop.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      title: Text(
+                        shop.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       subtitle: Text(
                         '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')} · ${shop.location}',
                         style: const TextStyle(fontSize: 12),
@@ -370,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
                           color: theme.primaryColor,
-                          fontSize: 15,
+                          fontSize: 14,
                         ),
                       ),
                     );
@@ -384,7 +453,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
 
 class _PulsingEmptyState extends StatefulWidget {
   const _PulsingEmptyState();
@@ -468,10 +536,7 @@ class _AnimatedAddButton extends StatefulWidget {
   final VoidCallback onTap;
   final Color primaryColor;
 
-  const _AnimatedAddButton({
-    required this.onTap,
-    required this.primaryColor,
-  });
+  const _AnimatedAddButton({required this.onTap, required this.primaryColor});
 
   @override
   State<_AnimatedAddButton> createState() => _AnimatedAddButtonState();
@@ -486,9 +551,13 @@ class _AnimatedAddButtonState extends State<_AnimatedAddButton>
   void initState() {
     super.initState();
     _c = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 100));
-    _scale = Tween<double>(begin: 1.0, end: 0.88)
-        .animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut));
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+    );
+    _scale = Tween<double>(
+      begin: 1.0,
+      end: 0.88,
+    ).animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut));
   }
 
   @override
@@ -514,10 +583,7 @@ class _AnimatedAddButtonState extends State<_AnimatedAddButton>
           height: 36,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                widget.primaryColor,
-                const Color(0xFF00BFA5),
-              ],
+              colors: [widget.primaryColor, const Color(0xFF00BFA5)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -531,15 +597,10 @@ class _AnimatedAddButtonState extends State<_AnimatedAddButton>
             ],
           ),
           child: const Center(
-            child: Icon(
-              Icons.add_rounded,
-              color: Colors.white,
-              size: 22,
-            ),
+            child: Icon(Icons.add_rounded, color: Colors.white, size: 22),
           ),
         ),
       ),
     );
   }
 }
-
